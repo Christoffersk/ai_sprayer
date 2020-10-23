@@ -16,7 +16,7 @@ class Detector:
             detections = [
                 prediction
                 for prediction in response["predictions"]
-                if (prediction["label"] == "person" and prediction["confidence"] > 0.5)
+                if (prediction["label"] == "cat" and prediction["confidence"] > 0.5)
             ]
             logging.info(detections)
 
@@ -24,7 +24,6 @@ class Detector:
             detections = []
 
         if detections:
-            print(detections)
             self._save_image(image, detections)
 
         return detections

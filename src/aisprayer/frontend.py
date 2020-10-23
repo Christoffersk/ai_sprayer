@@ -7,8 +7,7 @@ app.config["SEND_FILE_MAX_AGE_DEFAULT"] = 0
 @app.route("/")
 @app.route("/index")
 def show_index():
-    full_filename = "/home/pi/current.jpg"
-    return render_template("index.html", user_image=full_filename)
+    return render_template("index.html")
 
 
 # No caching at all for API endpoints.

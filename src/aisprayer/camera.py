@@ -20,7 +20,7 @@ class Camera:
     def capture(self):
         image_stream = BytesIO()
         with PiCamera() as camera:
-            camera.resolution = (1024, 768)
+            # camera.resolution = (1024, 768)
             camera.capture(image_stream, format="jpeg")
         self.image = Image.open(image_stream)
 

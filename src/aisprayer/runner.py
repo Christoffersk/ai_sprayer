@@ -35,13 +35,18 @@ class Runner:
         while True:
             start_time = time.time()
             self.camera.capture()
+            current_time = time.time() - start_time
+            logging.info(f"After camera: {current_time}")
 
             image = self.camera.get_image()
             image_stream = self.camera.get_stream()
             alarm = self.detector._detect_object(image, image_stream)
+            current_time = time.time() - start_time
+            logging.info(f"After detection: {current_time}")
             if alarm:
                 self.sprayer.spray()
                 logging.info("Cat detected")
 
             run_time = time.time() - start_time
+            logging.info(f"End: {run_time}")
             self._interval_keeper(run_time)
