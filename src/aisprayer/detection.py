@@ -30,11 +30,11 @@ class Detector:
         return detections
 
     def _save_image(self, image, detections):
-        static_path = os.path.join(os.path.dirname(__file__), "static")
-
-        image.save(os.path.join(static_path, "current.jpg"))
+        image_path = os.path.join(
+            os.path.dirname(__file__), "static", "current_rect.jpg"
+        )
         image_with_rect = self._draw_detections(image, detections)
-        image_with_rect.save(os.path.join(static_path, "current_rect.jpg"))
+        image_with_rect.save(image_path)
 
     def _draw_detections(self, image, detections):
         for prediction in detections:
