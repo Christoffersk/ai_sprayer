@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block title %}Config{% endblock %}
+
+{% block content %}
+<form class="form-inline" action="/send" method="post">
+	<p>Motion threshold:</p>
+	<p><input type="text" name="motion_threshold" /></p>
+	<p><input type="submit" value="apply"/></p>
+</form>
+{% endblock %}

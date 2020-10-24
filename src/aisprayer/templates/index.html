@@ -1,12 +1,8 @@
-<!DOCTYPE html>
-<html>
-<head>
- <title></title>
- <meta charset="utf-8" />
-</head>
-<body> 
-<div class="bd-example" align="middle">
+{% extends "base.html" %}
+{% block title %}AI sprayer gui{% endblock %}
+{% block content %}
+<h2>Latest detection</h2>
+<div class="bd-example" align="left">
     <img src="{{url_for('static', filename='current_rect.jpg')}}" />
 </div>
-</body>
-</html>
+{% endblock %}

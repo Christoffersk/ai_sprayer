@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request
 
 app = Flask(__name__)
 app.config["SEND_FILE_MAX_AGE_DEFAULT"] = 0
@@ -8,6 +8,19 @@ app.config["SEND_FILE_MAX_AGE_DEFAULT"] = 0
 @app.route("/index")
 def show_index():
     return render_template("index.html")
+
+
+@app.route("/config")
+def show_config():
+    return render_template("config.html")
+
+
+@app.route("/send", methods=["GET", "POST"])
+def send():
+    if request.method == "POST":
+        motion_threshold = request.form["motion_threshold"]
+        print(motion_threshold)
+    return render_template("config.html")
 
 
 # No caching at all for API endpoints.
