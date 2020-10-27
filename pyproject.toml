@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "aisprayer"
-version = "0.1.0"
+version = "0.2.0"
 description = "Detect unwanted animals in front of camera and sprays water on them"
 authors = ["Christoffer Kongstad <christoffersk@gmail.com>"]
 
@@ -10,3 +10,4 @@ gpiozero = "~1.5"
 picamera = "~1.13"
 pillow = "~7.2"
 requests = "~2.24"
+"RPi.GPIO" = "~0.7.0"

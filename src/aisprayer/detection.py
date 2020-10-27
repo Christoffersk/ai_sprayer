@@ -1,12 +1,57 @@
 import requests
 import logging
-from PIL import ImageDraw
+from PIL import ImageDraw, Image, ImageChops
 import os
+import numpy as np
 
 
 class Detector:
-    def __init__(self):
-        pass
+    def __init__(self, api_endpoint):
+        self.api_endpoint = api_endpoint
+
+        self.last_image = None
+
+    def detect(self, image, image_stream):
+        alarm = False
+
+        motion = self._detect_motion(image)
+
+        if motion:
+            detections = self._detect_object(image, image_stream)
+
+            if detections:
+                alarm = True
+
+        return alarm
+
+    def _calculate_image_entropy(self, image):
+        w, h = image.size
+        a = np.array(image.convert("RGB")).reshape((w * h, 3))
+        h, _ = np.histogramdd(a, bins=(16,) * 3, range=((0, 256),) * 3)
+        prob = h / np.sum(h)
+        prob = prob[prob > 0]
+        entropy = -np.sum(prob * np.log2(prob))
+        return entropy
+
+    def _detect_motion(self, image):
+        resize_size = (128, 96)
+        small_image = image.resize(resize_size, Image.ANTIALIAS)
+
+        threshold = 0.2
+
+        if self.last_image is None:
+            self.last_image = small_image
+
+        difference = ImageChops.difference(small_image, self.last_image)
+        entropy = self._calculate_image_entropy(difference)
+
+        self.last_image = small_image
+        logging.debug(entropy)
+
+        if entropy > threshold:
+            return True
+
+        return False
 
     def _detect_object(self, image, image_stream):
 
@@ -16,25 +61,24 @@ class Detector:
             detections = [
                 prediction
                 for prediction in response["predictions"]
-                if (prediction["label"] == "person" and prediction["confidence"] > 0.5)
+                if (prediction["label"] in ["cat"] and prediction["confidence"] > 0.5)
             ]
-            logging.info(detections)
+            logging.debug(detections)
 
-        except KeyError:
+        except Exception:
             detections = []
 
         if detections:
-            print(detections)
             self._save_image(image, detections)
 
         return detections
 
     def _save_image(self, image, detections):
-        static_path = os.path.join(os.path.dirname(__file__), "static")
-
-        image.save(os.path.join(static_path, "current.jpg"))
+        image_path = os.path.join(
+            os.path.dirname(__file__), "static", "current_rect.jpg"
+        )
         image_with_rect = self._draw_detections(image, detections)
-        image_with_rect.save(os.path.join(static_path, "current_rect.jpg"))
+        image_with_rect.save(image_path)
 
     def _draw_detections(self, image, detections):
         for prediction in detections:
@@ -59,7 +103,7 @@ class Detector:
 
     def _post_image(self, image_stream):
         response = requests.post(
-            "http://192.168.1.2:8109/v1/vision/detection", files={"image": image_stream}
+            self.api_endpoint, files={"image": image_stream}
         ).json()
         logging.debug(response)
         return response
