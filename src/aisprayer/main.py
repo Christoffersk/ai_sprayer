@@ -3,8 +3,8 @@ from .runner import Runner
 from .frontend import run_frontend
 import threading
 
-PUMPPIN = 4
-INTERVAL = 2
+PUMPPIN = 8
+INTERVAL = 1
 API_ENDPOINT = "http://192.168.1.2:8109/v1/vision/detection"
 
 

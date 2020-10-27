@@ -3,8 +3,16 @@
 
 {% block content %}
 <form class="form-inline" action="/send" method="post">
-	<p>Motion threshold:</p>
-	<p><input type="text" name="motion_threshold" /></p>
-	<p><input type="submit" value="apply"/></p>
+	<div class="form-group">
+		<label for="motion_threshold">Motion threshold: </label>
+		<input type="text" id="motion_threshold">
+	</div>
+	<input type="submit" class="btn btn-default" value="Submit"/>
+</form>
+<form class="form-inline" action="/send"  method="post">
+	<div class="checkbox">
+	  <label><input type="checkbox" id="cat">Cats</label>
+	</div>
+	<input type="submit" class="btn btn-default" value="Submit"/>
 </form>
 {% endblock %}

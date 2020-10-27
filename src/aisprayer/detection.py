@@ -46,7 +46,7 @@ class Detector:
         entropy = self._calculate_image_entropy(difference)
 
         self.last_image = small_image
-        print(entropy)
+        logging.debug(entropy)
 
         if entropy > threshold:
             return True
@@ -63,7 +63,7 @@ class Detector:
                 for prediction in response["predictions"]
                 if (prediction["label"] in ["cat"] and prediction["confidence"] > 0.5)
             ]
-            logging.info(detections)
+            logging.debug(detections)
 
         except Exception:
             detections = []
