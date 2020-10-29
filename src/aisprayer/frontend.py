@@ -1,7 +1,10 @@
 from flask import Flask, render_template, request
+from .config_handler import ConfigHandler
 
 app = Flask(__name__)
 app.config["SEND_FILE_MAX_AGE_DEFAULT"] = 0
+
+CONFIG = ConfigHandler()
 
 
 @app.route("/")

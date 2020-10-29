@@ -4,11 +4,13 @@ from PIL import ImageDraw, Image, ImageChops
 import os
 import numpy as np
 
+from .config_handler import ConfigHandler
+
 
 class Detector:
-    def __init__(self, api_endpoint, targets):
-        self.api_endpoint = api_endpoint
-        self.targets = targets
+    def __init__(self):
+        self.c = ConfigHandler()
+        self.api_endpoint = self.c.get("API_ENDPOINT")
         self.last_image = None
 
     def detect(self, image, image_stream):
@@ -37,7 +39,7 @@ class Detector:
         resize_size = (128, 96)
         small_image = image.resize(resize_size, Image.ANTIALIAS)
 
-        threshold = 0.2
+        threshold = self.c.get("MOTION_THRES")
 
         if self.last_image is None:
             self.last_image = small_image
@@ -62,8 +64,8 @@ class Detector:
                 prediction
                 for prediction in response["predictions"]
                 if (
-                    prediction["label"] in self.targets
-                    and prediction["confidence"] > 0.5
+                    prediction["label"] in self.c.get("TARGETS")
+                    and prediction["confidence"] > self.c.get("CONFIDENCE_THRES")
                 )
             ]
             logging.debug(detections)
@@ -77,9 +79,7 @@ class Detector:
         return detections
 
     def _save_image(self, image, detections):
-        image_path = os.path.join(
-            os.path.dirname(__file__), "static", "current_rect.jpg"
-        )
+        image_path = os.path.join(os.path.dirname(__file__), "static", "current.jpg")
         image_with_rect = self._draw_detections(image, detections)
         image_with_rect.save(image_path)
 
