@@ -11,7 +11,7 @@ from .sprayer import Sprayer
 
 
 class Runner:
-    def __init__(self, interval, pin, api_endpoint):
+    def __init__(self, interval, pin, api_endpoint, targets):
         logging.basicConfig(
             filename="/home/pi/logs/aisprayer.log",
             level=logging.INFO,
@@ -22,7 +22,7 @@ class Runner:
         self.interval = interval
         self.sprayer = Sprayer(pin)
         self.camera = Camera()
-        self.detector = Detector(api_endpoint=api_endpoint)
+        self.detector = Detector(api_endpoint=api_endpoint, targets=targets)
 
     def _interval_keeper(self, run_time):
         logging.debug(f"The code runs in {run_time}s")
