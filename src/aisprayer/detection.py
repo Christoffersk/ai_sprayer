@@ -6,9 +6,9 @@ import numpy as np
 
 
 class Detector:
-    def __init__(self, api_endpoint):
+    def __init__(self, api_endpoint, targets):
         self.api_endpoint = api_endpoint
-
+        self.targets = targets
         self.last_image = None
 
     def detect(self, image, image_stream):
@@ -61,7 +61,10 @@ class Detector:
             detections = [
                 prediction
                 for prediction in response["predictions"]
-                if (prediction["label"] in ["cat"] and prediction["confidence"] > 0.5)
+                if (
+                    prediction["label"] in self.targets
+                    and prediction["confidence"] > 0.5
+                )
             ]
             logging.debug(detections)
 
