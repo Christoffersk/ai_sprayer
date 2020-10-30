@@ -7,7 +7,7 @@ from .config_handler import ConfigHandler
 class Sprayer:
     def __init__(self):
         self.c = ConfigHandler()
-        self.pin = self.c.get("PIN")
+        self.pin = self.c.get("PUMPPIN")
         self.last_spray = time.time()
         self.spray_counter = 0
         GPIO.setmode(GPIO.BOARD)

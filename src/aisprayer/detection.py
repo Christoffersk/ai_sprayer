@@ -56,7 +56,6 @@ class Detector:
         return False
 
     def _detect_object(self, image, image_stream):
-
         response = self._post_image(image_stream)
 
         try:

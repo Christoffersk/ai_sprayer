@@ -1,13 +1,15 @@
 import yaml
 import os
 import time
+import logging
+import json
 
 
 class ConfigHandler:
     def __init__(self):
-        self.config_path = "config.yaml"
+        self.config_path = os.path.join(os.path.dirname(__file__), "config.yaml")
         self._load_config()
-        self.interval = self.config["INTERVAL"]
+        self.interval = self.config["PROGRAM_INTERVAL"]
 
     def _load_config(self):
         with open(self.config_path) as f:

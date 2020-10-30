@@ -27,10 +27,10 @@ class Runner:
 
     def _interval_keeper(self, run_time):
         logging.debug(f"The code runs in {run_time}s")
-        if run_time > self.c.get("INTERVAL"):
+        if run_time > self.c.get("PROGRAM_INTERVAL"):
             logging.warning(f"Code runs to slowly {run_time}s")
         else:
-            sleep(self.c.get("INTERVAL") - run_time)
+            sleep(self.c.get("PROGRAM_INTERVAL") - run_time)
 
     def run(self):
         while True:
