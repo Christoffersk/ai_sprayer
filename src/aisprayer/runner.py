@@ -8,10 +8,11 @@ from PIL import ImageDraw
 from .camera import Camera
 from .detection import Detector
 from .sprayer import Sprayer
+from .config_handler import ConfigHandler
 
 
 class Runner:
-    def __init__(self, interval, pin, api_endpoint, targets):
+    def __init__(self):
         logging.basicConfig(
             filename="/home/pi/logs/aisprayer.log",
             level=logging.INFO,
@@ -19,17 +20,17 @@ class Runner:
             datefmt="%Y-%m-%d %H:%M:%S",
         )
         logging.info("Started")
-        self.interval = interval
-        self.sprayer = Sprayer(pin)
+        self.c = ConfigHandler()
+        self.sprayer = Sprayer()
         self.camera = Camera()
-        self.detector = Detector(api_endpoint=api_endpoint, targets=targets)
+        self.detector = Detector()
 
     def _interval_keeper(self, run_time):
         logging.debug(f"The code runs in {run_time}s")
-        if run_time > self.interval:
+        if run_time > self.c.get("PROGRAM_INTERVAL"):
             logging.warning(f"Code runs to slowly {run_time}s")
         else:
-            sleep(self.interval - run_time)
+            sleep(self.c.get("PROGRAM_INTERVAL") - run_time)
 
     def run(self):
         while True:
