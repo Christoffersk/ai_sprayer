@@ -5,6 +5,7 @@ import os
 import numpy as np
 
 from .config_handler import ConfigHandler
+from .interface_helper import Interface
 
 
 class Detector:
@@ -12,6 +13,7 @@ class Detector:
         self.c = ConfigHandler()
         self.api_endpoint = self.c.get("API_ENDPOINT")
         self.last_image = None
+        self.interface = Interface()
 
     def detect(self, image, image_stream):
         alarm = False
@@ -73,14 +75,10 @@ class Detector:
             detections = []
 
         if detections:
-            self._save_image(image, detections)
+            detect_image = self._draw_detections(image, detections)
+            self.interface.send_image(detect_image, "detect_image")
 
         return detections
-
-    def _save_image(self, image, detections):
-        image_path = os.path.join(os.path.dirname(__file__), "static", "current.jpg")
-        image_with_rect = self._draw_detections(image, detections)
-        image_with_rect.save(image_path)
 
     def _draw_detections(self, image, detections):
         for prediction in detections:

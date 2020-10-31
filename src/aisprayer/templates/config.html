@@ -2,17 +2,13 @@
 {% block title %}Config{% endblock %}
 
 {% block content %}
-<form class="form-inline" action="/send" method="post">
-	<div class="form-group">
-		<label for="motion_threshold">Motion threshold: </label>
-		<input type="text" id="motion_threshold">
-	</div>
-	<input type="submit" class="btn btn-default" value="Submit"/>
-</form>
-<form class="form-inline" action="/send"  method="post">
-	<div class="checkbox">
-	  <label><input type="checkbox" id="cat">Cats</label>
-	</div>
-	<input type="submit" class="btn btn-default" value="Submit"/>
-</form>
+	{% for config in config_dict %}
+	<form action="/send" method="post">
+		<div class="form-inline">
+			<label>{{config}}</label>
+			<input type="text" class="form-control" id={{config}} name={{config}} value={{config_dict[config]}} style="margin : 10px">
+			<button type="submit" class="btn btn-primary" style="margin : 10px">Apply</button>
+		</div>
+	</form>
+    {% endfor %}
 {% endblock %}
