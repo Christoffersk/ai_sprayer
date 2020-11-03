@@ -52,12 +52,14 @@ def show_detections():
 
 @app.route("/config")
 def show_config():
+
     remove_settings = ["API_ENDPOINT", "PUMPPIN", "TARGETS"]
     settings = {
         key: value
         for (key, value) in CONFIG.config.items()
         if not key in remove_settings
     }
+
     return render_template("config.html", config_dict=settings)
 
 
@@ -67,6 +69,14 @@ def send():
     new_config = request.form.to_dict()
     print(new_config)
     CONFIG.update_config(new_config)
+
+    return redirect(url_for("show_config"))
+
+
+@app.route("/test", methods=["POST"])
+def test():
+
+    print(request.form)
 
     return redirect(url_for("show_config"))
 
