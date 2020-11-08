@@ -9,6 +9,7 @@ from .camera import Camera
 from .detection import Detector
 from .sprayer import Sprayer
 from .config_handler import ConfigHandler
+from .interface_helper import Interface
 
 
 class Runner:
@@ -24,6 +25,8 @@ class Runner:
         self.sprayer = Sprayer()
         self.camera = Camera()
         self.detector = Detector()
+        self.interface = Interface()
+        self.last_image_time = time.time()
 
     def _interval_keeper(self, run_time):
         logging.debug(f"The code runs in {run_time}s")
@@ -39,6 +42,12 @@ class Runner:
             image = self.camera.get_image()
             image_stream = self.camera.get_stream()
             alarm = self.detector.detect(image, image_stream)
+
+            if time.time() - self.last_image_time > self.c.get(
+                "CAMERA_UPDATE_INTERVAL"
+            ):
+                self.last_image_time = time.time()
+                self.interface.send_image(image, "image")
 
             if alarm:
                 self.sprayer.spray()
