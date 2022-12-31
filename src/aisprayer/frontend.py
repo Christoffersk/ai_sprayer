@@ -5,6 +5,7 @@ from PIL import Image
 import os
 
 from .config_handler import ConfigHandler
+from .sprayer import Sprayer
 
 # Init Flask
 app = Flask(__name__)
@@ -22,6 +23,8 @@ buffer.seek(0)
 CURRENT_IMAGE = base64.b64encode(buffer.read()).decode("utf-8")
 CURRENT_DETECT_IMAGE = CURRENT_IMAGE
 
+# init sprayer
+sprayer = Sprayer()
 
 @app.route("/update_image", methods=["POST"])
 def update_image():
@@ -72,6 +75,12 @@ def send():
 
     return redirect(url_for("show_config"))
 
+@app.route("/spray", methods=["POST"])
+def test():
+
+    sprayer.spray()
+
+    return render_template("index.html", img_data=CURRENT_IMAGE)
 
 @app.route("/test", methods=["POST"])
 def test():

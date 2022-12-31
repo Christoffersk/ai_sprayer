@@ -3,6 +3,7 @@ import time
 
 from .config_handler import ConfigHandler
 
+GPIO.setmode(GPIO.BCM)
 
 class Sprayer:
     def __init__(self):
