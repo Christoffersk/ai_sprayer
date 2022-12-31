@@ -47,7 +47,6 @@ class Detector:
         resp = requests.post(apiUrl, params, files=files)
         return resp
 
-    send_photo(chat_id, open(file_path, 'rb'))
 
     def _calculate_image_entropy(self, image):
         w, h = image.size
