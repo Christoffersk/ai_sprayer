@@ -28,7 +28,7 @@ class Detector:
                 alarm = True
         
         image_stream.seek(0)
-            self._send_photo(image_stream.read())
+        self._send_photo(image_stream.read())
 
         return alarm
 
