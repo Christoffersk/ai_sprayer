@@ -3,7 +3,7 @@ import time
 
 from .config_handler import ConfigHandler
 
-GPIO.setmode(GPIO.BCM)
+
 
 class Sprayer:
     def __init__(self):
@@ -11,7 +11,7 @@ class Sprayer:
         self.pin = self.c.get("PUMPPIN")
         self.last_spray = time.time()
         self.spray_counter = 0
-        GPIO.setmode(GPIO.BOARD)
+        GPIO.setmode(GPIO.BCM)
         GPIO.setup(self.pin, GPIO.OUT)
 
     def spray(self):
