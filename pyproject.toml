@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "aisprayer"
-version = "0.5.1"
+version = "0.5.2"
 description = "Detect unwanted animals in front of camera and sprays water on them"
 authors = ["Christoffer Kongstad <christoffersk@gmail.com>"]
 

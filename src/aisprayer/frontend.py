@@ -76,7 +76,7 @@ def send():
     return redirect(url_for("show_config"))
 
 @app.route("/spray", methods=["POST"])
-def test():
+def manual_spray():
 
     sprayer.spray()
 
