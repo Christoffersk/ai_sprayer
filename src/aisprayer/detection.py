@@ -26,14 +26,12 @@ class Detector:
             
             if detections:
                 alarm = True
-        
-        image_stream.seek(0)
-        self._send_photo(image_stream.read())
+                self._send_photo(image_stream)
 
         return alarm
 
 
-    def _send_photo(self, image): #TODO: break out from detection
+    def _send_photo(self, image_stream): #TODO: break out from detection
         
         with open("/home/pi/secrets.yaml") as f:
             secrets = yaml.load(f, Loader=yaml.FullLoader)
@@ -41,6 +39,9 @@ class Detector:
         chat_id = secrets["CHAT_ID"]
         token = secrets["TOKEN"]
 
+        image_stream.seek(0)
+        image = image_stream.read()
+        
         params = {'chat_id': chat_id}
         files = {'photo': image}
         
