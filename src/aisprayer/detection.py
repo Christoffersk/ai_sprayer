@@ -3,6 +3,7 @@ import logging
 from PIL import ImageDraw, Image, ImageChops
 import os
 import numpy as np
+import yaml
 
 from .config_handler import ConfigHandler
 from .interface_helper import Interface
@@ -22,11 +23,31 @@ class Detector:
 
         if motion:
             detections = self._detect_object(image, image_stream)
-
+            
             if detections:
                 alarm = True
+            
+            self._send_photo(image)
 
         return alarm
+
+
+    def _send_photo(self, image): #TODO: break out from detection
+        
+        with open("/home/pi/secrets.yaml") as f:
+            secrets = yaml.load(f, Loader=yaml.FullLoader)
+
+        chat_id = secrets["CHAT_ID"]
+        token = secrets["TOKEN"]
+
+        params = {'chat_id': chat_id}
+        files = {'photo': image}
+        
+        apiUrl = f"https://api.telegram.org/bot{token}/sendPhoto"
+        resp = requests.post(apiUrl, params, files=files)
+        return resp
+
+    send_photo(chat_id, open(file_path, 'rb'))
 
     def _calculate_image_entropy(self, image):
         w, h = image.size
