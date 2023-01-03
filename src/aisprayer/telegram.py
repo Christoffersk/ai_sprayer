@@ -2,7 +2,7 @@ import yaml
 import requests
 
     
-def send_photo(self, image_stream): #TODO: break out from detection
+def send_photo(image_stream): #TODO: break out from detection
     
     with open("/home/pi/secrets.yaml") as f:
         secrets = yaml.load(f, Loader=yaml.FullLoader)

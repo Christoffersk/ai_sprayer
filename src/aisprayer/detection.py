@@ -25,7 +25,6 @@ class Detector:
             
             if detections:
                 alarm = True
-                
 
         return alarm
 
