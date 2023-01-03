@@ -10,7 +10,7 @@ from .detection import Detector
 from .sprayer import Sprayer
 from .config_handler import ConfigHandler
 from .interface_helper import Interface
-
+from .telegram import send_photo
 
 class Runner:
     def __init__(self):
@@ -50,8 +50,12 @@ class Runner:
                 self.interface.send_image(image, "image")
 
             if alarm:
+                send_photo(image_stream)
                 self.sprayer.spray()
                 logging.info("Cat detected")
+                for i in range(5):
+                    sleep(50)
+                    send_photo(image_stream)
 
             run_time = time.time() - start_time
             self._interval_keeper(run_time)
