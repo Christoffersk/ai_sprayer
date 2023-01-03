@@ -54,7 +54,7 @@ class Runner:
                 self.sprayer.spray()
                 logging.info("Cat detected")
                 for i in range(5):
-                    sleep(50)
+                    sleep(0.2)
                     send_photo(image_stream)
 
             run_time = time.time() - start_time
